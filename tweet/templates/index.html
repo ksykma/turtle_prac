@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인덱스 페이지</title>
+</head>
+<body>
+    <h1>모든 게시글</h1>
+    {% for article in articles %}
+        <div>
+            <a href="{% url 'tweet:article_detail' article.id %} ">
+                <h3>{{ article.title }}</h3>
+            </a>
+            <!-- <a href="{% url 'tweet:article_detail' article.pk %} "><h3>{{ article.title }}</h3></a> 도 가능!(다른값을 pk로 지정해주지 않는다면
+                ) -->
+        </div>
+    {% endfor %}
+</body>
+</html>
