@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import User #user 모델 불러오기
 from django.contrib.auth import authenticate, login as loginsession
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
 
 def signup(request):
     if request.method == "GET":
@@ -14,7 +15,7 @@ def signup(request):
         passwordcheck = request.POST.get('passwordcheck')
         # print(username, password, passwordcheck) 위 3가지 값들이 잘 가져와 졌는지 확인
         if password == passwordcheck:
-            User.objects.create_user(username=username, password=password)
+            User.objects.create_user(username=username, password=password) # create를 사용하면 비밀번호 자동 해싱 된다.
             return HttpResponse("회원가입 완료!")
         else:
             return HttpResponse("비밀번호 확인이 틀렸습니다.")
@@ -44,8 +45,14 @@ def profile(request, username):
     # user = User.objects.get(username=username) 이것 대신 아래 404를 사용하면 이상한 아이디를 주소창에 쳤을 때 이상한 오류창이 아니라 404창이 뜬다.
     # 예쁜 404창을 만드려면 debug를 false로 해주자!
     user = get_object_or_404(User, username=username)
+    # for article in user.article_set.all():
+        # 유저가 작성한 모든 글을 불러올 때
+        # print(article)
     context = {
         'user': user
     }
     # html에서 context안에 들어있는 데이터를 이용할 수 있다.
     return render(request, 'profile.html', context)
+
+def logout_view(request):
+    logout(request)
